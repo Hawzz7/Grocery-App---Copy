@@ -115,6 +115,7 @@ export const stripeWebhook = async (req, res) => {
 
   const sig = req.headers["stripe-signature"];
   let event;
+
   try {
     event = stripeInstance.webhooks.constructEvent(
       req.body,
@@ -122,12 +123,12 @@ export const stripeWebhook = async (req, res) => {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (error) {
-    res.status(400).send(`Webhook Error: ${error.message}`);
+    return res.status(400).send(`Webhook Error: ${error.message}`);
   }
 
   // Handle the event
   switch (event.type) {
-    case payment_intent.succeeded: {
+    case "payment_intent.succeeded": {
       const paymentIntent = event.data.object;
       const paymentIntentId = paymentIntent.id;
 
@@ -146,7 +147,7 @@ export const stripeWebhook = async (req, res) => {
       break;
     }
 
-    case payment_intent.payment_failed: {
+    case "payment_intent.payment_failed": {
       const paymentIntent = event.data.object;
       const paymentIntentId = paymentIntent.id;
 
@@ -165,7 +166,7 @@ export const stripeWebhook = async (req, res) => {
       break;
   }
 
-  response.json({ received: true });
+  res.json({ received: true });
 };
 
 // Get orders by userId: /api/order/user
