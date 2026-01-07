@@ -29,7 +29,7 @@ const App = () => {
       <Toaster />
 
       <div
-        className={`${isSellerPath ? "" : "px-6 md:px-16 lg:px-24 xl:px-32 sm:pt-24"}`}
+        className={`${isSellerPath ? "" : "px-6 md:px-16 lg:px-24 xl:px-32 pt-20 sm:pt-24"}`}
       >
         <Routes>
           <Route path="/" element={<Home />} />
